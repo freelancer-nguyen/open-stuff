@@ -20,6 +20,8 @@ import org.apache.tools.ant.taskdefs.Execute;
 import org.apache.tools.ant.types.Environment;
 import org.apache.tools.ant.types.Environment.Variable;
 
+import com.sun.jna.Platform;
+
 public class EnhancedExecTask extends ExecTask {
 
 	private Environment env = new Environment();
@@ -62,7 +64,11 @@ public class EnhancedExecTask extends ExecTask {
 		if (redirectorElement != null) {
 			redirectorElement.configure(redirector);
 		}
-		Execute exe = new EnhancedExecute(createHandler(), createWatchdog());
+		Execute exe = null;
+		if (Platform.isWindows())
+			exe = new WindowsExecute(createHandler(), createWatchdog());
+		else
+			exe = new Execute(createHandler(), createWatchdog());
 		exe.setAntRun(getProject());
 		exe.setWorkingDirectory(dir);
 		exe.setVMLauncher(vmLauncher);

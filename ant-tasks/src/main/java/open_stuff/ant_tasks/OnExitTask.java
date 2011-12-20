@@ -18,79 +18,101 @@ import org.apache.tools.ant.Task;
 import org.apache.tools.ant.property.LocalProperties;
 import org.apache.tools.ant.taskdefs.Sequential;
 
-public class OnExitTask extends Task {
+public class OnExitTask extends Task
+{
 
 	private Sequential success = null;
 	private Sequential fail = null;
 
-	public OnExitTask() {
+	public OnExitTask()
+	{
 	}
 
-	public Sequential createSuccess() {
+	public Sequential createSuccess()
+	{
 		success = new Sequential();
 		return success;
 	}
 
-	public Sequential createFail() {
+	public Sequential createFail()
+	{
 		fail = new Sequential();
 		return fail;
 	}
 
-	public void execute() throws BuildException {
-		
-		if (success == null) {
-            log("No nested success element found.", Project.MSG_WARN);
-        }
+	public void execute() throws BuildException
+	{
 
-        if (fail == null) {
-            log("No nested failure element found.", Project.MSG_WARN);
-        }
+		if (success == null)
+		{
+			log("No nested success element found.", Project.MSG_WARN);
+		}
 
-        getProject().addBuildListener(new TaskRunner(success, fail));
+		if (fail == null)
+		{
+			log("No nested failure element found.", Project.MSG_WARN);
+		}
+
+		getProject().addBuildListener(new TaskRunner(success, fail));
 	}
 
-	private class TaskRunner implements BuildListener {
+	private class TaskRunner implements BuildListener
+	{
 
 		private Task onSuccess;
 		private Task onFail;
 
-		public TaskRunner(Task onSuccess, Task onFail) {
+		public TaskRunner(Task onSuccess, Task onFail)
+		{
 			this.onSuccess = onSuccess;
 			this.onFail = onFail;
 		}
 
-		public void buildFinished(BuildEvent event) {
+		public void buildFinished(BuildEvent event)
+		{
 			LocalProperties localProperties = LocalProperties.get(getProject());
 			localProperties.enterScope();
-			try {
-				if (event.getException() == null) {
+			try
+			{
+				if (event.getException() == null)
+				{
 					if (onSuccess != null)
 						onSuccess.perform();
-				} else if (event.getException() != null) {
+				}
+				else if (event.getException() != null)
+				{
 					if (onFail != null)
 						onFail.perform();
 				}
-			} finally {
+			}
+			finally
+			{
 				localProperties.exitScope();
 			}
 		}
 
-		public void buildStarted(BuildEvent arg0) {
+		public void buildStarted(BuildEvent arg0)
+		{
 		}
 
-		public void messageLogged(BuildEvent arg0) {
+		public void messageLogged(BuildEvent arg0)
+		{
 		}
 
-		public void targetFinished(BuildEvent arg0) {
+		public void targetFinished(BuildEvent arg0)
+		{
 		}
 
-		public void targetStarted(BuildEvent arg0) {
+		public void targetStarted(BuildEvent arg0)
+		{
 		}
 
-		public void taskFinished(BuildEvent arg0) {
+		public void taskFinished(BuildEvent arg0)
+		{
 		}
 
-		public void taskStarted(BuildEvent arg0) {
+		public void taskStarted(BuildEvent arg0)
+		{
 		}
 	}
 }

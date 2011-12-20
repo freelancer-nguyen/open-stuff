@@ -27,100 +27,135 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
-public class EnhancedSoundTask extends Task implements LineListener {
-
+public class EnhancedSoundTask extends Task implements LineListener
+{
 	private File source = null;
 	private int loops = 0;
 	private Long duration = null;
 
-	public void setSource(File source) {
+	public void setSource(File source)
+	{
 		this.source = source;
 	}
 
-	public void setLoops(int loops) {
+	public void setLoops(int loops)
+	{
 		this.loops = loops;
 	}
 
-	public void setDuration(Long duration) {
+	public void setDuration(Long duration)
+	{
 		this.duration = duration;
 	}
 
-	public EnhancedSoundTask() {
+	public EnhancedSoundTask()
+	{
 		super();
 	}
 
-	public void execute() throws BuildException {
+	public void execute() throws BuildException
+	{
 		Clip audioClip = null;
 
 		AudioInputStream audioInputStream = null;
 
-		try {
+		try
+		{
 			audioInputStream = AudioSystem.getAudioInputStream(source);
-		} catch (UnsupportedAudioFileException uafe) {
+		}
+		catch (UnsupportedAudioFileException uafe)
+		{
 			log("Audio format is not yet supported: " + uafe.getMessage());
-		} catch (IOException ioe) {
+		}
+		catch (IOException ioe)
+		{
 			ioe.printStackTrace();
 		}
 
-		if (audioInputStream != null) {
+		if (audioInputStream != null)
+		{
 			AudioFormat format = audioInputStream.getFormat();
 			DataLine.Info info = new DataLine.Info(Clip.class, format,
 					AudioSystem.NOT_SPECIFIED);
-			try {
+			try
+			{
 				audioClip = (Clip) AudioSystem.getLine(info);
 				audioClip.addLineListener(this);
 				audioClip.open(audioInputStream);
-			} catch (LineUnavailableException e) {
+			}
+			catch (LineUnavailableException e)
+			{
 				log("The sound device is currently unavailable");
 				return;
-			} catch (IOException e) {
+			}
+			catch (IOException e)
+			{
 				e.printStackTrace();
 			}
 
-			if (duration != null) {
+			if (duration != null)
+			{
 				playClip(audioClip, duration.longValue());
-			} else {
+			}
+			else
+			{
 				playClip(audioClip, loops);
 			}
 			audioClip.drain();
 			audioClip.close();
-		} else {
+		}
+		else
+		{
 			log("Can't get data from file " + source.getName());
 		}
 	}
 
-	private void playClip(Clip clip, int loops) {
+	private void playClip(Clip clip, int loops)
+	{
 
 		clip.loop(loops);
-		do {
-			try {
+		do
+		{
+			try
+			{
 				long timeLeft = (clip.getMicrosecondLength() - clip
 						.getMicrosecondPosition()) / 1000;
-				if (timeLeft > 0) {
+				if (timeLeft > 0)
+				{
 					Thread.sleep(timeLeft);
 				}
-			} catch (InterruptedException e) {
+			}
+			catch (InterruptedException e)
+			{
 				break;
 			}
-		} while (clip.isRunning());
+		}
+		while (clip.isRunning());
 
-		if (clip.isRunning()) {
+		if (clip.isRunning())
+		{
 			clip.stop();
 		}
 	}
 
-	private void playClip(Clip clip, long duration) {
+	private void playClip(Clip clip, long duration)
+	{
 		clip.loop(Clip.LOOP_CONTINUOUSLY);
-		try {
+		try
+		{
 			Thread.sleep(duration);
-		} catch (InterruptedException e) {
+		}
+		catch (InterruptedException e)
+		{
 			// Ignore Exception
 		}
 		clip.stop();
 	}
 
-	public void update(LineEvent event) {
-		if (event.getType().equals(LineEvent.Type.STOP)) {
+	public void update(LineEvent event)
+	{
+		if (event.getType().equals(LineEvent.Type.STOP))
+		{
 			Line line = event.getLine();
 			line.close();
 		}
