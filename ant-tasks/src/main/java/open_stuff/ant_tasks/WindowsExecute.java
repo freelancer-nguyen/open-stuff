@@ -22,12 +22,19 @@ import org.apache.tools.ant.taskdefs.ExecuteWatchdog;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 
+/**
+ * Copy-paste of {@link org.apache.tools.ant.taskdefs.Execute}
+ * This class uses JNA to obtain windows PID of the launched 
+ * process, then call taskill to kill the whole process tree
+ * 
+ * @author freelancer
+ *
+ */
 class WindowsExecute extends Execute
 {
 
 	static private interface Kernel32 extends Library
 	{
-
 		public static Kernel32 INSTANCE = (Kernel32) Native.loadLibrary(
 				"kernel32", Kernel32.class);
 

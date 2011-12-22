@@ -18,16 +18,21 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
-import javax.sound.sampled.Line;
-import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
-public class EnhancedSoundTask extends Task implements LineListener
+/**
+ * Copy-paste of {@link org.apache.tools.ant.taskdefs.optional.sound.SoundTask}
+ * The only different is that it can be used everywhere, not just at the end of
+ * build.
+ * 
+ * @author freelancer
+ *
+ */
+public class EnhancedSoundTask extends Task
 {
 	private File source = null;
 	private int loops = 0;
@@ -80,7 +85,6 @@ public class EnhancedSoundTask extends Task implements LineListener
 			try
 			{
 				audioClip = (Clip) AudioSystem.getLine(info);
-				audioClip.addLineListener(this);
 				audioClip.open(audioInputStream);
 			}
 			catch (LineUnavailableException e)
@@ -150,15 +154,6 @@ public class EnhancedSoundTask extends Task implements LineListener
 			// Ignore Exception
 		}
 		clip.stop();
-	}
-
-	public void update(LineEvent event)
-	{
-		if (event.getType().equals(LineEvent.Type.STOP))
-		{
-			Line line = event.getLine();
-			line.close();
-		}
 	}
 
 }

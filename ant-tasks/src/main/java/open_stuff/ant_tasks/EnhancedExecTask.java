@@ -22,6 +22,14 @@ import org.apache.tools.ant.types.Environment.Variable;
 
 import com.sun.jna.Platform;
 
+/**
+ * Copy-paste of {@link org.apache.tools.ant.taskdefs.ExecTask} The only
+ * difference is that if the current platform, it will launch a
+ * {@link WindowsExecute} instead of
+ * {@link org.apache.tools.ant.taskdefs.Execute}
+ * 
+ * @author freelancer
+ */
 public class EnhancedExecTask extends ExecTask {
 
 	private Environment env = new Environment();
