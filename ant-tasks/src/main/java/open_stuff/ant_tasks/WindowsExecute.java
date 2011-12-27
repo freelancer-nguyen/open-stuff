@@ -19,8 +19,9 @@ import org.apache.tools.ant.taskdefs.Execute;
 import org.apache.tools.ant.taskdefs.ExecuteStreamHandler;
 import org.apache.tools.ant.taskdefs.ExecuteWatchdog;
 
-import com.sun.jna.Library;
-import com.sun.jna.Native;
+import com.sun.jna.Pointer;
+import com.sun.jna.platform.win32.Kernel32;
+import com.sun.jna.platform.win32.WinNT.HANDLE;
 
 /**
  * Copy-paste of {@link org.apache.tools.ant.taskdefs.Execute}
@@ -32,15 +33,6 @@ import com.sun.jna.Native;
  */
 class WindowsExecute extends Execute
 {
-
-	static private interface Kernel32 extends Library
-	{
-		public static Kernel32 INSTANCE = (Kernel32) Native.loadLibrary(
-				"kernel32", Kernel32.class);
-
-		public int GetProcessId(Long hProcess);
-	}
-
 	static private Kernel32 nativeBridge = Kernel32.INSTANCE;
 
 	private Project project;
@@ -169,7 +161,9 @@ class WindowsExecute extends Execute
 		{
 			f = p.getClass().getDeclaredField("handle");
 			f.setAccessible(true);
-			int pid = nativeBridge.GetProcessId((Long) f.get(p));
+			long peer = ((Long)f.get(p)).longValue();
+			HANDLE handle = new HANDLE(new Pointer(peer));
+			int pid = nativeBridge.GetProcessId(handle);
 			return pid;
 		}
 		catch (Exception ex)
