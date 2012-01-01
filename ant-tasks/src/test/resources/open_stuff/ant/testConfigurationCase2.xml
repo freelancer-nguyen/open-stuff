@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration xmlns="http://code.google.com/p/open-stuff/CmdColorConfiguration" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://code.google.com/p/open-stuff/CmdColorConfiguration CmdColorConfiguration.xsd ">
+	<color>
+		<colorAttribute value="12"/>
+		<priority lesserThan="3"/>
+	</color>
+</configuration>
