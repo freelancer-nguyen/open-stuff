@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright (c) 2012 freelancer.
+  All rights reserved. This program and the accompanying materials
+  are made available under the terms of the GNU Lesser Public License v3
+  which accompanies this distribution, and is available at
+  http://www.gnu.org/licenses/lgpl.html
+  
+  Contributors:
+      freelancer - initial API and implementation
+-->
 <schema targetNamespace="http://code.google.com/p/open-stuff/CmdColorConfiguration" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://code.google.com/p/open-stuff/CmdColorConfiguration">
 
     <complexType name="CmdColorCondition">
