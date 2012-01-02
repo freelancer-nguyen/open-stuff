@@ -55,7 +55,7 @@ class CmdColorConfiguration {
 				DocumentBuilder builder = builderFactory.newDocumentBuilder();
 				Document doc = builder.parse(configurationAsStream);
 				
-				Element root = (Element)doc.getFirstChild();
+				Element root = doc.getDocumentElement();
 				
 				NodeList cmdColorConditions = root.getChildNodes();
 				

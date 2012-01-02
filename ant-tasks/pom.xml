@@ -13,7 +13,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>open-stuff</groupId>
 	<artifactId>ant-tasks</artifactId>
-	<version>0.5</version>
+	<version>0.6</version>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -44,7 +44,7 @@
 		<dependency>
 			<groupId>open-stuff</groupId>
 			<artifactId>jna-win</artifactId>
-			<version>0.5</version>
+			<version>0.5.1</version>
 		</dependency>
 	</dependencies>
 
