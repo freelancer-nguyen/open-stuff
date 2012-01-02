@@ -10,13 +10,16 @@
  ******************************************************************************/
 package open_stuff.jna.win;
 
+import com.sun.jna.Platform;
 import com.sun.jna.Pointer;
+
 import com.sun.jna.platform.win32.WinNT.HANDLE;
 
 import open_stuff.jna_win.Kernel32Ext;
 import open_stuff.jna_win.types.CONSOLE_SCREEN_BUFFER_INFO;
 import open_stuff.jna_win.types.Constants;
 import junit.framework.TestCase;
+import junit.framework.TestResult;
 
 public class Kernel32ExtTestCase extends TestCase {
 	
@@ -43,4 +46,12 @@ public class Kernel32ExtTestCase extends TestCase {
 		System.out.println("test");
 		assertFalse(Kernel32Ext.INSTANCE.SetConsoleTextAttribute(stdHandle, bufferInfo.wAttributes));
 	}
+	
+	public void run(TestResult result)
+	{
+		// Only test on windows
+		if (Platform.isWindows())
+			super.run(result);
+	}
+	
 }
